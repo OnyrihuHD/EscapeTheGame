@@ -1,16 +1,12 @@
 import pygame
 from pygame.locals import *
-from classes.mainchar import MainChar
 
-pygame.init()
+from classes.gamemanager import GameManager
 
-winWidth = 1200
-winHeight = 600
-mainFrame = pygame.display.set_mode((winWidth, winHeight))
+gm = GameManager()
 
 clock = pygame.time.Clock()
 running = True
-mainChar = MainChar(mainFrame)
 
 while running:
     clock.tick(27)
@@ -20,6 +16,6 @@ while running:
             running = False
 
     keys = pygame.key.get_pressed()
-    mainChar.moveUpdate(keys)
+    gm.mainChar.moveUpdate(keys)
 
 pygame.quit()

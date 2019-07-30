@@ -2,26 +2,22 @@ import pygame
 
 
 class MainChar:
-    background = pygame.image.load('images/background/bg0.jpg')
 
-    def __init__(self, _win):
+    def __init__(self, _gm):
+        self.gm = _gm
         self.jumping = False
         self.health = 100
         self.maxHealth = 100
         self.width = 40
         self.height = 60
         self.vel = 5
-        self.window = _win
-        self.x = 50
-        self.y = self.window.get_height() - 100
+        self.x = self.gm.winFrame.get_width() // 2
+        self.y = 2 * self.gm.winFrame.get_height() // 3
         self.jumpCount = 10
         self.left = False
         self.right = False
         self.lastFacing = 'R'
         self.walkCount = 0
-        self.imgDir = 'images/main_char/'
-        self.walkLeft = [pygame.image.load(self.imgDir + 'L' + str(i) + '.png') for i in range(1, 10)]
-        self.walkRight = [pygame.image.load(self.imgDir + 'R' + str(i) + '.png') for i in range(1, 10)]
 
     def isJumping(self):
         return self.jumping
@@ -46,7 +42,7 @@ class MainChar:
             self.right = False
             self.lastFacing = 'L'
 
-        elif _keys[pygame.K_RIGHT] and self.x < self.window.get_width() - self.vel - self.width:
+        elif _keys[pygame.K_RIGHT] and self.x < self.gm.winFrame.get_width() - self.vel - self.width:
             self.x += self.vel
             self.left = False
             self.right = True
@@ -58,7 +54,7 @@ class MainChar:
             self.walkCount = 0
 
         if not self.isJumping():
-            if _keys[pygame.K_SPACE]:
+            if _keys[pygame.K_UP]:
                 self.setJumping(True)
                 self.right = False
                 self.left = False
@@ -71,24 +67,21 @@ class MainChar:
                 self.jumpCount = 10
                 self.setJumping(False)
 
-        self.redrawWindow()
+        self.gm.updateView()
 
-    def redrawWindow(self):
-        self.window.blit(self.background, (0, 0))
-
+    def setDisplay(self):
+        posX, posY = self.gm.levelManager.getCharAbsPos()
         if self.walkCount + 1 >= 27:
             self.walkCount = 0
         if self.left:
-            self.window.blit(self.walkLeft[self.walkCount // 3], (self.x, self.y))
+            self.gm.winFrame.blit(self.gm.texture.mainWalkLeft[self.walkCount // 3], (posX, posY))
             self.walkCount += 1
         elif self.right:
-            self.window.blit(self.walkRight[self.walkCount // 3], (self.x, self.y))
+            self.gm.winFrame.blit(self.gm.texture.mainWalkRight[self.walkCount // 3], (posX, posY))
             self.walkCount += 1
         else:
             if self.lastFacing == 'L':
-                self.window.blit(self.walkLeft[0], (self.x, self.y))
+                self.gm.winFrame.blit(self.gm.texture.mainWalkLeft[0], (posX, posY))
             else:
-                self.window.blit(self.walkRight[0], (self.x, self.y))
+                self.gm.winFrame.blit(self.gm.texture.mainWalkRight[0], (posX, posY))
             self.walkCount = 0
-
-        pygame.display.update()

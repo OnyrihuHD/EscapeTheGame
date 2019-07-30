@@ -10,13 +10,12 @@ class GameManager:
     winHeight = 600
 
     def __init__(self):
-        pygame.init()
         self.winFrame = pygame.display.set_mode((self.winWidth, self.winHeight))
         self.levelManager = LevelManager(self, 0)
 
         self.mainChar = MainChar(self)
-        self.startingX = 100
-        self.startingY = 500
+        self.startingX = self.levelManager.startingX
+        self.startingY = self.levelManager.startingY
         self.mainChar.x = self.startingX
         self.mainChar.y = self.startingY - self.mainChar.height
 

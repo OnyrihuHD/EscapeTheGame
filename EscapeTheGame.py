@@ -3,6 +3,7 @@ from pygame.locals import *
 
 from classes.gamemanager import GameManager
 
+pygame.init()
 gm = GameManager()
 
 clock = pygame.time.Clock()

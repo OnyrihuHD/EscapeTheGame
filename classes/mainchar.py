@@ -18,6 +18,7 @@ class MainChar:
         self.right = False
         self.lastFacing = 'R'
         self.walkCount = 0
+        self.hitbox = (self.x + 18, self.y + 11, 27, 50)
 
     def isJumping(self):
         return self.jumping
@@ -85,3 +86,4 @@ class MainChar:
             else:
                 self.gm.winFrame.blit(self.gm.texture.mainWalkRight[0], (posX, posY))
             self.walkCount = 0
+        pygame.draw.rect(self.gm.winFrame, (255, 0, 0), self.hitbox, 2)

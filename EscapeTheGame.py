@@ -17,6 +17,6 @@ while running:
             running = False
 
     keys = pygame.key.get_pressed()
-    gm.mainChar.moveUpdate(keys)
+    gm.player.moveUpdate(keys)
 
 pygame.quit()

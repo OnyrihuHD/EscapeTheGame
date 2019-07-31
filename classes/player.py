@@ -1,7 +1,7 @@
 import pygame
 
 
-class MainChar:
+class Player(object):
 
     def __init__(self, _gm):
         self.gm = _gm
@@ -87,3 +87,10 @@ class MainChar:
                 self.gm.winFrame.blit(self.gm.texture.mainWalkRight[0], (posX, posY))
             self.walkCount = 0
         pygame.draw.rect(self.gm.winFrame, (255, 0, 0), self.hitbox, 2)
+
+    def hasBlockDown(self):
+        hasBlock = False
+        idX_L = self.x // 50
+        idX_R = (self.x + self.hitbox[2]) // 50
+        idY = self.y + self.hitbox[3] // 50
+        lv = self.gm.levelManager.getCurrentLevel()

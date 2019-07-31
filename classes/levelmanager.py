@@ -59,7 +59,7 @@ class LevelManager:
         for i in range(len(lv)):
             for j in range(len(lv[i])):
                 if lv[i][j] == 'D':
-                    x, y = 50*j, 50*(i+1)
+                    x, y = 50 * j, 50 * (i + 1)
         return x, y
 
 

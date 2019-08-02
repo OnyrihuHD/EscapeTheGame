@@ -25,7 +25,9 @@ class Display:
         for i in range(len(lv)):
             for j in range(len(lv[i])):
                 if lv[i][j] == 'B':
-                    self.getScreen().blit(texture.BRICK, (50 * j + self.offX, 50 * i + self.offY))
+                    self.getScreen().blit(texture.BRICK,
+                                          (const.LEVEL_RES * j + self.offX, const.LEVEL_RES * i + self.offY),
+                                          [0, 0, const.LEVEL_RES, const.LEVEL_RES])
 
     def displayPlayer(self):
         p = self.GM.getPlayer()
@@ -47,7 +49,7 @@ class Display:
 
         if const.DEBUG:
             loc = self.addOffset(p.getLocation())
-            hitbox = (loc.getX(), loc.getY(), p.hitbox[0]+1, p.hitbox[1]+1)
+            hitbox = (loc.getX(), loc.getY(), p.hitbox[0] + 1, p.hitbox[1] + 1)
             pygame.draw.rect(self.screen, (255, 0, 0), hitbox, 1)
 
     def update(self):

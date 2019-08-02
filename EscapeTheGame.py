@@ -4,6 +4,8 @@ from pygame.locals import *
 from classes.gamemanager import GameManager
 
 pygame.init()
+pygame.display.set_caption('Escape The Game - ver. 0.1')
+
 GM = GameManager()
 GM.start(0)
 

@@ -8,7 +8,6 @@ from classes.vector import Vector
 class Player(Collidable):
     velocity = Vector(0, 0)
     speed = const.CHAR_BASE_SPEED
-    jumping = False
     health = 100
     maxHealth = 100
     facing = 1
@@ -17,12 +16,6 @@ class Player(Collidable):
     def __init__(self, _gm):
         super().__init__(_gm)
         self.hitbox = (const.CHAR_WIDTH, const.CHAR_HEIGHT)
-
-    def isJumping(self):
-        return self.jumping
-
-    def setJumping(self, _jump):
-        self.jumping = _jump
 
     def getHealth(self):
         return self.health
@@ -88,19 +81,15 @@ class Player(Collidable):
             vel.setX(0)
             self.walkSeq = 0
 
-        if _keys[pygame.K_UP]:
-            if not self.isJumping():
-                self.setJumping(True)
-                self.walkSeq = 0
-                vel.setY(-const.CHAR_JUMP_SPEED)
-
         if self.hasBlockUp(level):
             if vel.getY() < 0:
                 vel.setY(0)
 
         if self.hasBlockDown(level):
+            if _keys[pygame.K_UP]:
+                self.walkSeq = 0
+                vel.setY(-const.CHAR_JUMP_SPEED)
             if vel.getY() > 0:
-                self.setJumping(False)
                 vel.setY(0)
         else:
             vel.setY(vel.getY() + const.GRAVITY)

@@ -6,6 +6,9 @@ class Collidable:
     hitbox = (0, 0)
     location = Location(0, 0)
 
+    def __init__(self, _gm):
+        self.GM = _gm
+
     def getLocation(self):
         return self.location
 
@@ -92,3 +95,23 @@ class Collidable:
             mat = self.getSafeMatrix(_loc, _level)
 
         return _loc
+
+    def hasBlockDown(self, _level):
+        tr = Vector(0, 1)
+        mat = self.getSafeMatrix(self.getLocation().addVec(tr), _level)
+        return not (mat[2][0] and mat[2][1] and mat[2][2])
+
+    def hasBlockUp(self, _level):
+        tr = Vector(0, -1)
+        mat = self.getSafeMatrix(self.getLocation().addVec(tr), _level)
+        return not (mat[0][0] and mat[0][1] and mat[0][2])
+
+    def hasBlockLeft(self, _level):
+        tr = Vector(-1, 0)
+        mat = self.getSafeMatrix(self.getLocation().addVec(tr), _level)
+        return not (mat[0][0] and mat[1][0] and mat[2][0])
+
+    def hasBlockRight(self, _level):
+        tr = Vector(1, 0)
+        mat = self.getSafeMatrix(self.getLocation().addVec(tr), _level)
+        return not (mat[0][2] and mat[1][2] and mat[2][2])

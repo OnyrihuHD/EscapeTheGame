@@ -19,11 +19,11 @@ class LevelManager:
         return self.generateLevel(self.currentLevel)
 
     def generateLevel(self, _lv):
-        file = 'stages/lv0'
+        fileName = 'stages/lv0'
         if _lv in list(range(2)):
-            file = 'stages/lv' + str(self.currentLevel)
+            fileName = 'stages/lv' + str(self.currentLevel)
 
-        with open(file, 'r') as file:
+        with open(fileName, 'r') as file:
             plan = []
             for line in file:
                 plan.append([k for k in line if k != '\n'])

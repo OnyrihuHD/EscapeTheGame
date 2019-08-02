@@ -15,7 +15,7 @@ class Player(Collidable):
     walkSeq = 0
 
     def __init__(self, _gm):
-        self.GM = _gm
+        super().__init__(_gm)
         self.hitbox = (const.CHAR_WIDTH, const.CHAR_HEIGHT)
 
     def isJumping(self):
@@ -70,7 +70,7 @@ class Player(Collidable):
         vel = self.getVelocity()
         if _keys[pygame.K_LEFT]:
             self.setFacing(-1)
-            if self.hasBlockLeft():
+            if self.hasBlockLeft(level):
                 vel.setX(0)
                 self.walkSeq = 0
             else:
@@ -78,7 +78,7 @@ class Player(Collidable):
 
         elif _keys[pygame.K_RIGHT]:
             self.setFacing(1)
-            if self.hasBlockRight():
+            if self.hasBlockRight(level):
                 vel.setX(0)
                 self.walkSeq = 0
             else:
@@ -94,11 +94,11 @@ class Player(Collidable):
                 self.walkSeq = 0
                 vel.setY(-const.CHAR_JUMP_SPEED)
 
-        if self.hasBlockUp():
+        if self.hasBlockUp(level):
             if vel.getY() < 0:
                 vel.setY(0)
 
-        if self.hasBlockDown():
+        if self.hasBlockDown(level):
             if vel.getY() > 0:
                 self.setJumping(False)
                 vel.setY(0)
@@ -115,23 +115,3 @@ class Player(Collidable):
         else:
             loc = loc.addVec(vel)
         self.setLocation(loc)
-
-    def hasBlockDown(self):
-        tr = Vector(0, 1)
-        mat = self.getSafeMatrix(self.getLocation().addVec(tr), self.GM.getLevelManager().getGenerated())
-        return not (mat[2][0] and mat[2][1] and mat[2][2])
-
-    def hasBlockUp(self):
-        tr = Vector(0, -1)
-        mat = self.getSafeMatrix(self.getLocation().addVec(tr), self.GM.getLevelManager().getGenerated())
-        return not (mat[0][0] and mat[0][1] and mat[0][2])
-
-    def hasBlockLeft(self):
-        tr = Vector(-1, 0)
-        mat = self.getSafeMatrix(self.getLocation().addVec(tr), self.GM.getLevelManager().getGenerated())
-        return not (mat[0][0] and mat[1][0] and mat[2][0])
-
-    def hasBlockRight(self):
-        tr = Vector(1, 0)
-        mat = self.getSafeMatrix(self.getLocation().addVec(tr), self.GM.getLevelManager().getGenerated())
-        return not (mat[0][2] and mat[1][2] and mat[2][2])

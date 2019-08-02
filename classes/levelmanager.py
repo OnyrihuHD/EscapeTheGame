@@ -1,73 +1,30 @@
-import stages.level0 as lv0
+import const
+from classes.level import Level
 
 
 class LevelManager:
+    currentLevel = 0
 
-    def __init__(self, _gm, _level):
-        self.gm = _gm
-        self.currentLevel = _level
-        self.startingX, self.startingY = self.getStartingPos()
+    def __init__(self, _gm):
+        self.GM = _gm
+        self.generatedLevel = self.generateCurrentLevel()
 
+    def getGenerated(self):
+        return self.generatedLevel
 
+    def setCurrentLevel(self, _lv):
+        self.currentLevel = _lv
 
+    def generateCurrentLevel(self):
+        return self.generateLevel(self.currentLevel)
 
-    def update(self):
-        posX, posY = self.getTerrainPos()
-        lv = self.generateLevel()
-        for i in range(len(lv)):
-            for j in range(len(lv[i])):
-                if lv[i][j] == 'B':
-                    self.gm.winFrame.blit(self.gm.texture.brick, (50 * j - posX, 50 * i - posY))
+    def generateLevel(self, _lv):
+        file = 'stages/lv0'
+        if _lv in list(range(2)):
+            file = 'stages/lv' + str(self.currentLevel)
 
-    def getCharPos(self):
-        return self.gm.mainChar.x, self.gm.mainChar.y
-
-    def getCharAbsPos(self):
-        return self.gm.winFrame.get_width() // 2, 2 * self.gm.winFrame.get_height() // 3
-
-    def getTerrainPos(self):
-        a = self.getCharPos()
-        b = self.getCharAbsPos()
-        return a[0] - b[0], a[1] - b[1]
-
-
-
-    def generateLevel(self):
-
-        if self.currentLevel == 0:
-            self.file = 'stages/lv0'
-
-        if self.currentLevel:
-            self.file = 'stages/lv1'
-
-
-        with open(self.file,"r") as file:
+        with open(file, 'r') as file:
             plan = []
-            for ligne in file:
-                lignePlan =[]
-                for k in ligne:
-                    if k !='\n':
-                        lignePlan.append(k)
-                plan.append(lignePlan)
-            return plan
-
-
-
-    def getStartingPos(self):
-        x, y = 0, 0
-        lv = self.generateLevel()
-        for i in range(len(lv)):
-            for j in range(len(lv[i])):
-                if lv[i][j] == 'D':
-                    x, y = 50 * j, 50 * (i + 1)
-        return x, y
-
-
-
-
-    def setLevel(self,level):
-        self.currentLevel = _level
-
-
-
-
+            for line in file:
+                plan.append([k for k in line if k != '\n'])
+            return Level(plan)

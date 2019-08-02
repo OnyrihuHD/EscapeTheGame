@@ -1,5 +1,8 @@
-class Obstacle:
-    def __init__(self, _x, _y, _width, _height):
-        self.x = _x
-        self.y = _x
-        self.hitbox = (_x + _width / 2, _y + _height / 2, _width, _height)
+from classes.collidable import Collidable
+
+
+class Obstacle(Collidable):
+    def __init__(self, _loc, _width, _height):
+        self.setLocation(_loc)
+        x, y = _loc.toXY()
+        self.hitbox = (x, y, _width, _height)

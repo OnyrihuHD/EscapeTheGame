@@ -1,43 +1,28 @@
-import pygame
-
+import const
+from classes.display import Display
 from classes.levelmanager import LevelManager
-from classes.mainchar import MainChar
-from classes.texture import Texture
+from classes.player import Player
+from classes.vector import Vector
 
 
 class GameManager:
-    winWidth = 1200
-    winHeight = 600
 
     def __init__(self):
-        self.winFrame = pygame.display.set_mode((self.winWidth, self.winHeight))
-        self.levelManager = LevelManager(self, 0)
-
+        self.display = Display(self, (const.WIN_WIDTH, const.WIN_HEIGHT))
+        self.levelManager = LevelManager(self)
         self.player = Player(self)
-        self.startingX = self.levelManager.startingX
-        self.startingY = self.levelManager.startingY
-        self.player.x = self.startingX
-        self.player.y = self.startingY - self.player.height
 
-        self.texture = Texture(self)
+    def getDisplay(self):
+        return self.display
 
-    def updateView(self):
-        self.winFrame.blit(self.texture.background, (0, 0))
-        self.levelManager.update()
-        self.mainChar.setDisplay()
-        pygame.display.update()
+    def getLevelManager(self):
+        return self.levelManager
 
-    @staticmethod
-    def isColliding(obj1, obj2):
-        if not (hasattr(obj1, 'hitbox') and hasattr(obj2, 'hitbox')):
-            return False
+    def getPlayer(self):
+        return self.player
 
-        H1, H2 = obj1.hitbox, obj2.hitbox
-        L1, R1 = [obj1.x, obj1.y], [obj1.x + H1[2], obj1.y + H1[3]]
-        L2, R2 = [obj2.x, obj2.y], [obj2.x + H2[2], obj2.y + H2[3]]
-
-        if L1[0] > R2[0] or L2[0] > R1[0]:
-            return False
-        if L1[1] < R2[1] or L2[1] < R1[1]:
-            return False
-        return True
+    def start(self, _lv):
+        self.getLevelManager().setCurrentLevel(_lv)
+        loc = self.getLevelManager().generateCurrentLevel().getStarting()
+        loc = loc.addVec(Vector((50 - const.CHAR_WIDTH) / 2, - const.CHAR_HEIGHT))
+        self.getPlayer().setLocation(loc)

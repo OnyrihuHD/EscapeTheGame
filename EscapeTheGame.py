@@ -4,12 +4,14 @@ from pygame.locals import *
 from classes.gamemanager import GameManager
 
 pygame.init()
-gm = GameManager()
+GM = GameManager()
+GM.start(0)
 
 clock = pygame.time.Clock()
 running = True
 
 while running:
+
     clock.tick(27)
 
     for event in pygame.event.get():
@@ -17,6 +19,7 @@ while running:
             running = False
 
     keys = pygame.key.get_pressed()
-    gm.player.moveUpdate(keys)
+    GM.getPlayer().moveUpdate(keys)
+    GM.getDisplay().update()
 
 pygame.quit()

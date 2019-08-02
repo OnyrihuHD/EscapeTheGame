@@ -14,7 +14,7 @@ running = True
 
 while running:
 
-    clock.tick(27)
+    clock.tick(30)  # 30 FPS
 
     for event in pygame.event.get():
         if event.type == KEYDOWN and event.key == K_ESCAPE or event.type == QUIT:

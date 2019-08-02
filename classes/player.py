@@ -57,7 +57,7 @@ class Player(Collidable):
         return self.getLocation().addVec(-Vector(int(offX), int(offY)))
 
     def moveUpdate(self, _keys):
-        level = self.GM.getLevelManager().getGenerated()
+        level = self.GM.getCurrentLevel()
 
         # CALCUL DE LA VITESSE
         vel = self.getVelocity()
